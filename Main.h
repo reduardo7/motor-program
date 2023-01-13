@@ -11,7 +11,6 @@ class Main {
   private:
     // static SoftwareSerial BTSerial;
     static Motor motorLeft;
-    static Motor motorRight;
     
     static Timer timer;
     static Timer timerWorking;
@@ -19,8 +18,9 @@ class Main {
     static PinOutDigital buzzer;
     static Button btnStartStop;
     static Timer interval;
+    static unsigned long nextInterval;
+    static unsigned int interlvalPing;
     static bool leftOn;
-    static bool firtsInterlvalSkip;
 
     // static bool btConnected;
 
@@ -49,7 +49,7 @@ class Main {
       // because there are a Capacitor and a Diode.
       motorLeft.forward();
 
-      timerWorking.start(WORKING_DURATION_TIME * 1000UL);
+      timerWorking.start(WORKING_DURATION_TIME);
     }
 
     static void stopMotorLeft() {
@@ -57,7 +57,6 @@ class Main {
       motorLeft.stop();
       timerWorking.stop();
       leftOn = false;
-      firtsInterlvalSkip = true;
     }
     
   public:
@@ -65,7 +64,6 @@ class Main {
       // BTSerial.begin(9600);
 
       motorLeft.setSpeed(100);
-      motorRight.setSpeed(100);
 
       stop();
 
@@ -96,13 +94,26 @@ class Main {
       //   l1.invert();
       // }
 
-      if (interval.onFinish() && !leftOn && !led.isFlashing()) {
-        if (firtsInterlvalSkip) {
-          Serial.println("interval.onFinish | SKIP");
-          firtsInterlvalSkip = false;
+      if (
+        interval.onStep()
+        && !leftOn
+        && !led.isFlashing()
+      ) {
+        if (nextInterval > 1) {
+          nextInterval--;
+
+          Serial.print("interval.onStep: ");
+          Serial.println(nextInterval);
+
+          if (nextInterval == 0) {
+            Serial.println("nextInterval started!");
+            delayedStart();
+          }
         } else {
-          Serial.println("interval.onFinish");
-          delayedStart();
+          if (interlvalPing++ >= 10) {
+            interlvalPing = 0;
+            Serial.println("interlvalPing PING");
+          }
         }
       }
 
@@ -144,30 +155,30 @@ class Main {
       stopUI();
       timer.stop();
       
-      firtsInterlvalSkip = true;
-      interval.start(START_INTERVAL * 60UL * 60UL * 1000UL);
+      nextInterval = START_INTERVAL;
     }
 
     static void delayedStart() {
       Serial.println("delayedStart");
       stopMotorLeft();
       startUI();
-      interval.stop();
-      timer.start(DELAYED_START_TIME * 1000);
+      interlvalPing = 0;
+      nextInterval = 0;
+      timer.start(DELAYED_START_TIME);
     }
 };
 
 // static SoftwareSerial Main::BTSerial(PIN_BT_RX, PIN_BT_TX);
 Motor Main::motorLeft(PIN_MOTOR_L1, PIN_MOTOR_L2, PIN_MOTOR_LE);
-Motor Main::motorRight(PIN_MOTOR_R1, PIN_MOTOR_R2, PIN_MOTOR_RE);
 Timer Main::timer(0); // No start on setup
 Timer Main::timerWorking(0); // No start on setup
 PinOutDigital Main::led(LED_BUILTIN);
 PinOutDigital Main::buzzer(PIN_BUZZER);
-Timer Main::interval(0);
+Timer Main::interval(1000); // Run once each second
+unsigned long Main::nextInterval = 0;
+unsigned int Main::interlvalPing = 0;
 Button Main::btnStartStop(PIN_BTN_START_STOP);
 bool Main::leftOn = false;
-bool Main::firtsInterlvalSkip = false;
 // bool Main::btConnected = false;
 
 #endif
