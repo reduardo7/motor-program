@@ -17,7 +17,7 @@ class Main {
     static PinOutDigital led;
     static PinOutDigital buzzer;
     static Button btnStartStop;
-    static Timer interval;
+    static Interval interval;
     static unsigned long nextInterval;
     static unsigned int interlvalPing;
     static bool leftOn;
@@ -174,7 +174,7 @@ Timer Main::timer(0); // No start on setup
 Timer Main::timerWorking(0); // No start on setup
 PinOutDigital Main::led(LED_BUILTIN);
 PinOutDigital Main::buzzer(PIN_BUZZER);
-Timer Main::interval(1000); // Run once each second
+Interval Main::interval(1000); // Run once each second
 unsigned long Main::nextInterval = 0;
 unsigned int Main::interlvalPing = 0;
 Button Main::btnStartStop(PIN_BTN_START_STOP);
