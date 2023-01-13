@@ -49,7 +49,7 @@ class Main {
       // because there are a Capacitor and a Diode.
       motorLeft.forward();
 
-      timerWorking.start(WORKING_DURATION_TIME * 1000);
+      timerWorking.start(WORKING_DURATION_TIME * 1000UL);
     }
 
     static void stopMotorLeft() {
@@ -145,7 +145,7 @@ class Main {
       timer.stop();
       
       firtsInterlvalSkip = true;
-      interval.start(START_INTERVAL * 60 * 60 * 1000);
+      interval.start(START_INTERVAL * 60UL * 60UL * 1000UL);
     }
 
     static void delayedStart() {
