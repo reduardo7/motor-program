@@ -11,9 +11,9 @@
 #define PIN_BTN_START_STOP 2
 #define PIN_BUZZER 11
 
-// Countdown before start (5 sec)
+// Countdown before start (15 sec)
 // {Seconds}
-const unsigned long DELAYED_START_TIME = 5UL;
+const unsigned long DELAYED_START_TIME = 15UL;
 
 // After stop, time to start automatically again (1 hrs)
 // Warning: More that 1 hour is not working

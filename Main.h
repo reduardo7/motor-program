@@ -99,7 +99,7 @@ class Main {
         && !leftOn
         && !led.isFlashing()
       ) {
-        if (nextInterval > 1) {
+        if (nextInterval >= 1) {
           nextInterval--;
 
           Serial.print("interval.onStep: ");
@@ -146,7 +146,7 @@ class Main {
       startMotorLeft(duration);
       led.on();
       timer.stop();
-      interval.stop();
+      //interval.stop();
     }
 
     static void stop() {
