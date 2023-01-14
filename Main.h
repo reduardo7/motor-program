@@ -39,7 +39,7 @@ class Main {
       led.off();
     }
 
-    static void startMotorLeft() {
+    static void startMotorLeft(long duration) {
       Serial.println("startMotorLeft");
       
       stopUI();
@@ -49,7 +49,7 @@ class Main {
       // because there are a Capacitor and a Diode.
       motorLeft.forward();
 
-      timerWorking.start(WORKING_DURATION_TIME);
+      timerWorking.start(duration * 1000UL);
     }
 
     static void stopMotorLeft() {
@@ -119,7 +119,7 @@ class Main {
 
       if (btnStartStop.onLongClick()) {
         Serial.println("btnStartStop.onLongClick");
-        start();
+        start(WORKING_DURATION_TIME);
       } else if (btnStartStop.onShortClick()) {
         Serial.println("btnStartStop.onShortClick");
 
@@ -132,7 +132,7 @@ class Main {
 
       if (timer.onFinish()) {
         Serial.println("timer.onFinish");
-        start();
+        start(WORKING_DURATION_TIME_AUTO);
       }
 
       if (timerWorking.onFinish()) {
@@ -141,9 +141,9 @@ class Main {
       }
     }
 
-    static void start() {
+    static void start(long duration) {
       Serial.println("start");
-      startMotorLeft();
+      startMotorLeft(duration);
       led.on();
       timer.stop();
       interval.stop();
@@ -164,7 +164,7 @@ class Main {
       startUI();
       interlvalPing = 0;
       nextInterval = 0;
-      timer.start(DELAYED_START_TIME);
+      timer.start(DELAYED_START_TIME * 1000UL);
     }
 };
 

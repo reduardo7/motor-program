@@ -12,12 +12,20 @@
 #define PIN_BUZZER 11
 
 // Countdown before start (5 sec)
-const unsigned long DELAYED_START_TIME = 5UL * 1000UL;
+// {Seconds}
+const unsigned long DELAYED_START_TIME = 5UL;
 
-// After stop, time to start automatically again (4 hrs)
-const unsigned long START_INTERVAL = 4UL * 60UL * 60UL;
+// After stop, time to start automatically again (1 hrs)
+// Warning: More that 1 hour is not working
+// {Seconds}
+const unsigned long START_INTERVAL = 1UL * 60UL * 60UL;
+
+// Working duration when starts automatically (1 min)
+// {Seconds}
+const unsigned long WORKING_DURATION_TIME_AUTO = 1UL * 60UL;
 
 // Working duration (5 min)
-const unsigned long WORKING_DURATION_TIME = 5UL * 60UL * 1000UL;
+// {Seconds}
+const unsigned long WORKING_DURATION_TIME = 5UL * 60UL;
 
 #endif
