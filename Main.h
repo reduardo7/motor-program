@@ -112,8 +112,8 @@ class Main {
         } else {
           if (interlvalPing++ >= 10) {
             interlvalPing = 0;
-            Serial.println("interlvalPing PING");
           }
+          Serial.println("interlvalPing PING");
         }
       }
 
@@ -122,12 +122,7 @@ class Main {
         start(WORKING_DURATION_TIME);
       } else if (btnStartStop.onShortClick()) {
         Serial.println("btnStartStop.onShortClick");
-
-        // if (leftOn || led.isFlashing()) {
-          stop();
-        // }
-
-        led.flash(50, 3);
+        stop();
       }
 
       if (timer.onFinish()) {
@@ -146,15 +141,16 @@ class Main {
       startMotorLeft(duration);
       led.on();
       timer.stop();
-      //interval.stop();
     }
 
     static void stop() {
       Serial.println("stop");
+      led.flash(50, 3);
       stopMotorLeft();
       stopUI();
       timer.stop();
       
+      interlvalPing = 0;
       nextInterval = START_INTERVAL;
     }
 
