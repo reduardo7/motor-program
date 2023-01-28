@@ -65,7 +65,7 @@ class Main {
 
       motorLeft.setSpeed(100);
 
-      stop();
+      init();
 
       Serial.println("Ready!");
     }
@@ -122,7 +122,6 @@ class Main {
         start(WORKING_DURATION_TIME);
       } else if (btnStartStop.onShortClick()) {
         Serial.println("btnStartStop.onShortClick");
-      asm("jmp 0x0000");
         stop();
       }
 
@@ -133,7 +132,6 @@ class Main {
 
       if (timerWorking.onFinish()) {
         Serial.println("timerWorking.onFinish");
-      asm("jmp 0x0000");
         stop();
       }
     }
@@ -146,6 +144,10 @@ class Main {
     }
 
     static void stop() {
+      asm("jmp 0x0000");
+    }
+    
+    static void init() {
       Serial.println("stop");
       led.flash(50, 3);
       stopMotorLeft();
