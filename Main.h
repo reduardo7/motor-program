@@ -27,7 +27,7 @@ class Main {
     static void startUI() {
       Serial.println("startUI");
       led.flash(500);
-      buzzer.flash(300);
+      buzzer.flash(300, 3);
     }
 
     static void stopUI() {
