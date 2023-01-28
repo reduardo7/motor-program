@@ -27,7 +27,7 @@ class Main {
     static void startUI() {
       Serial.println("startUI");
       led.flash(500);
-      buzzer.flash(500);
+      buzzer.flash(300);
     }
 
     static void stopUI() {
@@ -122,6 +122,7 @@ class Main {
         start(WORKING_DURATION_TIME);
       } else if (btnStartStop.onShortClick()) {
         Serial.println("btnStartStop.onShortClick");
+      asm("jmp 0x0000");
         stop();
       }
 
@@ -132,6 +133,7 @@ class Main {
 
       if (timerWorking.onFinish()) {
         Serial.println("timerWorking.onFinish");
+      asm("jmp 0x0000");
         stop();
       }
     }
