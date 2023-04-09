@@ -19,8 +19,8 @@ class Main {
     static Button btnStartStop;
     static Interval interval;
     static unsigned long nextInterval;
-    static unsigned int interlvalPing;
-    static bool leftOn;
+    static unsigned int intervalPing;
+    static bool motorOn;
 
     // static bool btConnected;
 
@@ -39,24 +39,26 @@ class Main {
       led.off();
     }
 
-    static void startMotorLeft(long duration) {
-      Serial.println("startMotorLeft");
+    static void startMotor(long duration) {
+      Serial.println("startMotor");
       
       stopUI();
-      leftOn = true;
+      motorOn = true;
       
       // The contactor will run only with FORWARD,
       // because there are a Capacitor and a Diode.
       motorLeft.forward();
 
-      timerWorking.start(duration * 1000UL);
+      if (duration > 0) {
+        timerWorking.start(duration * 1000UL);
+      }
     }
 
-    static void stopMotorLeft() {
-      Serial.println("stopMotorLeft");
+    static void stopMotor() {
+      Serial.println("stopMotor");
       motorLeft.stop();
       timerWorking.stop();
-      leftOn = false;
+      motorOn = false;
     }
     
   public:
@@ -96,7 +98,7 @@ class Main {
 
       if (
         interval.onStep()
-        && !leftOn
+        && !motorOn
         && !led.isFlashing()
       ) {
         if (nextInterval >= 1) {
@@ -110,19 +112,24 @@ class Main {
             delayedStart();
           }
         } else {
-          if (interlvalPing++ >= 10) {
-            interlvalPing = 0;
+          if (intervalPing++ >= 10) {
+            intervalPing = 0;
           }
-          Serial.println("interlvalPing PING");
+          Serial.println("intervalPing PING");
         }
       }
 
       if (btnStartStop.onLongClick()) {
         Serial.println("btnStartStop.onLongClick");
-        start(WORKING_DURATION_TIME);
+        start(-1);
       } else if (btnStartStop.onShortClick()) {
         Serial.println("btnStartStop.onShortClick");
-        stop();
+
+        if (motorOn) {
+          stop();
+        } else {
+          start(WORKING_DURATION_TIME_AUTO);
+        }
       }
 
       if (timer.onFinish()) {
@@ -138,31 +145,32 @@ class Main {
 
     static void start(long duration) {
       Serial.println("start");
-      startMotorLeft(duration);
+      startMotor(duration);
       led.on();
       timer.stop();
     }
 
     static void stop() {
+      // Restart the system
       asm("jmp 0x0000");
     }
     
     static void init() {
       Serial.println("stop");
       led.flash(50, 3);
-      stopMotorLeft();
+      stopMotor();
       stopUI();
       timer.stop();
       
-      interlvalPing = 0;
+      intervalPing = 0;
       nextInterval = START_INTERVAL;
     }
 
     static void delayedStart() {
       Serial.println("delayedStart");
-      stopMotorLeft();
+      stopMotor();
       startUI();
-      interlvalPing = 0;
+      intervalPing = 0;
       nextInterval = 0;
       timer.start(DELAYED_START_TIME * 1000UL);
     }
@@ -176,9 +184,9 @@ PinOutDigital Main::led(LED_BUILTIN);
 PinOutDigital Main::buzzer(PIN_BUZZER);
 Interval Main::interval(1000); // Run once each second
 unsigned long Main::nextInterval = 0;
-unsigned int Main::interlvalPing = 0;
+unsigned int Main::intervalPing = 0;
 Button Main::btnStartStop(PIN_BTN_START_STOP);
-bool Main::leftOn = false;
+bool Main::motorOn = false;
 // bool Main::btConnected = false;
 
 #endif
