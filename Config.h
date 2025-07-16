@@ -11,20 +11,20 @@
 #define PIN_BTN_START_STOP 2
 #define PIN_BUZZER 11
 
-// Countdown before start (15 sec)
+// Countdown before start (60 sec)
 // {Seconds}
-const unsigned long DELAYED_START_TIME = 15UL;
+const unsigned long DELAYED_START_TIME = 60UL;
 
 // After stop, time to start automatically again (6 hrs)
 // {Seconds}
 const unsigned long START_INTERVAL = 6UL * 60UL * 60UL;
 
-// Working duration when starts automatically (4 min)
+// Working duration when starts automatically (1 min)
 // {Seconds}
-const unsigned long WORKING_DURATION_TIME_AUTO = 4UL * 60UL;
+const unsigned long WORKING_DURATION_TIME_AUTO = 1UL * 60UL;
 
-// Manual start working duration (8 min)
+// Manual start working duration (10 min)
 // {Seconds}
-const unsigned long WORKING_DURATION_TIME = 8UL * 60UL;
+const unsigned long WORKING_DURATION_TIME = 10UL * 60UL;
 
 #endif
