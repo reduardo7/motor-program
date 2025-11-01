@@ -2,7 +2,6 @@
 #define _MODULE_MOTOR
 
 #include "Config.h"
-#include "App_Runnable.h"
 
 class Motor: public Runnable {
   private:

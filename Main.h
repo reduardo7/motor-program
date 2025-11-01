@@ -2,9 +2,7 @@
 #define _MODULE_MAIN
 
 // #include <SoftwareSerial.h>
-#include <Component_Button.h>
-#include <Component_PinOutDigital.h>
-#include <Lib_Timer.h>
+#include "arduino-multi-tasking-kit.h"
 #include "Motor.h"
 
 class Main {
